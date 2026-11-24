@@ -20,6 +20,11 @@ import os
 
 LINE = "My last words are behind a paywall."
 
+# Fail fast if the line ever stops satisfying the gate (1-140 chars,
+# single line, not only whitespace): a broken line must never ship.
+if not (1 <= len(LINE) <= 140 and "\n" not in LINE and LINE.strip()):
+    raise SystemExit("entry line violates the 1-140 char single-line gate")
+
 def main():
     outdir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(outdir, exist_ok=True)
